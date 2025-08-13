@@ -1,0 +1,3 @@
+[submodule "VanillaEpochLeveling"]
+	path = VanillaEpochLeveling
+	url = https://github.com/SimonGaufreteau/VanillaEpochLeveling.git

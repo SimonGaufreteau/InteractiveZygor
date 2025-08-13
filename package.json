@@ -1,0 +1,23 @@
+{
+  "name": "interactivezygor",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview",
+    "generate-data": "ts-node scripts/generate_data.ts"
+  },
+  "devDependencies": {
+    "@types/leaflet": "^1.9.20",
+    "@types/node": "^24.2.1",
+    "ts-node": "^10.9.2",
+    "typescript": "~5.8.3",
+    "vite": "^7.1.2"
+  },
+  "dependencies": {
+    "leaflet": "^1.9.4",
+    "leaflet-polylinedecorator": "^1.6.0"
+  }
+}
