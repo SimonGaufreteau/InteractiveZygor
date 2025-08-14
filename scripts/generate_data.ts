@@ -1,6 +1,7 @@
 import fs from "fs";
+import { stringify } from "csv-stringify";
 
-type PointData = {
+export type PointData = {
   zone: string;
   x: number;
   y: number;
@@ -28,9 +29,24 @@ export function buildData(content: string): PointData[] {
   return data;
 }
 
+function write_to_file(points: PointData[], path: string): void {
+  const columns = {
+    x: "x",
+    y: "y",
+  };
+
+  stringify(points, { header: true, columns: columns }, (err, output) => {
+    if (err) throw err;
+    fs.writeFile(path, output, (err) => {
+      if (err) throw err;
+    });
+  });
+}
+
 const data = fs.readFileSync(
   "./VanillaEpochLeveling/src/epoch/zygor_guides/alliance/human1-13.zygor_guide",
   "utf8",
 );
 
-buildData(data);
+const points = buildData(data).filter((p) => p.zone == "Elwynn Forest");
+write_to_file(points, "./public/points.csv");

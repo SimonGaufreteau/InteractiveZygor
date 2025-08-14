@@ -2,77 +2,63 @@ import L from "leaflet";
 import "leaflet-polylinedecorator";
 import "./style.css";
 
-const imageWidth = 13000;
-const imageHeight = 12000;
+import { loadMap, setTriggers } from "./map_utils";
+import { loadPointsFromGuide } from "./loader";
 
-const bounds: L.LatLngBoundsExpression = [
-  [0, 0],
-  [imageHeight, imageWidth],
-];
+function examplePoints(map: L.Map) {
+  // Example points
+  const pointA: L.LatLngExpression = [4000, 3000];
+  const pointB: L.LatLngExpression = [9000, 8000];
 
-// Create map with flat coordinate system
-const map = L.map("map", {
-  crs: L.CRS.Simple,
-  // TODO :This currently nicely fits to maxscreen, but would be nice if this was done automatically
-  minZoom: -3.65,
-  maxBounds: bounds,
-  maxBoundsViscosity: 1.0,
-});
+  // Add markers
+  L.marker(pointA).addTo(map).bindPopup("Point A");
+  L.marker(pointB).addTo(map).bindPopup("Point B");
 
-// Load image from public folder
-L.imageOverlay("/map.png", bounds).addTo(map);
-map.fitBounds(bounds);
+  // Draw arrow from A → B
+  const line = L.polyline([pointA, pointB], { color: "red", weight: 1 }).addTo(
+    map,
+  );
 
-// Example points
-const pointA: L.LatLngExpression = [4000, 3000];
-const pointB: L.LatLngExpression = [9000, 8000];
+  // Add arrowhead using PolylineDecorator
+  // @ts-ignore - plugin extends L
+  const arrow = L.polylineDecorator(line, {
+    patterns: [
+      {
+        offset: "0%",
+        repeat: 50,
+        symbol: L.Symbol.arrowHead({
+          pixelSize: 10,
+          polygon: true,
+          pathOptions: { fillOpacity: 1, color: "blue", weight: 0 },
+        }),
+      },
+    ],
+  }).addTo(map);
+  return map;
+}
 
-// Add markers
-L.marker(pointA).addTo(map).bindPopup("Point A");
-L.marker(pointB).addTo(map).bindPopup("Point B");
+const map = loadMap();
+examplePoints(map);
+setTriggers(map);
 
-// Draw arrow from A → B
-const line = L.polyline([pointA, pointB], { color: "red", weight: 1 }).addTo(
-  map,
-);
+const points = await loadPointsFromGuide("/points.csv");
+const xTop = 8392;
+const yTop = 3888;
+const xBot = 10052;
+const yBot = 2888;
 
-// Add arrowhead using PolylineDecorator
-// @ts-ignore - plugin extends L
-const arrow = L.polylineDecorator(line, {
-  patterns: [
-    {
-      offset: "0%",
-      repeat: 50,
-      symbol: L.Symbol.arrowHead({
-        pixelSize: 10,
-        polygon: true,
-        pathOptions: { fillOpacity: 1, color: "blue", weight: 0 },
-      }),
-    },
-  ],
-}).addTo(map);
+// Original map size
+const orig_x = 1000;
+const orig_y = 668;
+// Original scale : by how much we need to multiply the coordinates to get the pixel position
+const orig_scale_x = orig_x / 100;
+const orig_scale_y = orig_y / 100;
+// New scale : how much bigger the new map is * the original scaling
+const new_scale_x = (orig_scale_x * Math.abs(xBot - xTop)) / orig_x;
+const new_scale_y = (orig_scale_y * Math.abs(yBot - yTop)) / orig_y;
 
-// Array to store markers
-const markers: L.Marker[] = [];
-
-// Add marker on map click
-map.on("click", (e: L.LeafletMouseEvent) => {
-  const { lat, lng } = e.latlng;
-
-  const marker = L.marker([lat, lng])
-    .addTo(map)
-    .bindPopup(`Marker at ${lat.toFixed(0)}, ${lng.toFixed(0)}`);
-
-  // Click marker to remove it
-  marker.on("dblclick", () => {
-    marker.remove();
-    const index = markers.indexOf(marker);
-    if (index > -1) markers.splice(index, 1);
-  });
-
-  marker.on("click", () => {
-    marker.openPopup();
-  });
-
-  markers.push(marker);
-});
+points
+  .map((p) => ({ x: xTop + p.x * new_scale_x, y: yTop - p.y * new_scale_y }))
+  .forEach((p) =>
+    L.marker([p.y, p.x]).bindPopup(`Marker at ${p.x}, ${p.y}`).addTo(map),
+  );
