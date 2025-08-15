@@ -42,9 +42,11 @@ examplePoints(map);
 setTriggers(map);
 
 const points = await loadPointsFromGuide("/points.csv");
-const xTop = 8392;
-const yTop = 3888;
-const xBot = 10052;
+
+// Elwynn Forest coordinates
+const xTop = 8378;
+const yTop = 3908;
+const xBot = 10100;
 const yBot = 2888;
 
 // Original map size
