@@ -2,14 +2,15 @@
 
 A guide viewer for Zygor guides.
 
+## Current bugs
+
+- Points in Stormwind are probably off
+- Points like `goto Blasted Lands` without coordinates are missing. This should not be too much of an issue since another point with coordinates usually follows
+
 ## TODO
 
 MVP :
 
-- Check git lfs for the map
-- Define zone coordinates in a separate file
-- Generate markers in a separate file
-- Display markers with the map coordinates rescale
 - Draw arrows between markers
 
 P1 :

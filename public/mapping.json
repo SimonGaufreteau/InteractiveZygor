@@ -1,0 +1,17 @@
+{
+  "guides": [
+    "human1-13.csv",
+    "elf1-13.csv",
+    "gnome1-13.csv",
+    "dwarf1-13.csv",
+    "main13-20.csv",
+    "main20-25.csv",
+    "main25-30.csv",
+    "main30-35.csv",
+    "main35-40.csv",
+    "main40-45.csv",
+    "main45-50.csv",
+    "main50-55.csv",
+    "main55-60.csv"
+  ]
+}

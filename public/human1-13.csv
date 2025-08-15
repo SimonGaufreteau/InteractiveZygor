@@ -20,6 +20,7 @@ Elwynn Forest,48.1,43.6
 Elwynn Forest,49.9,42.6
 Elwynn Forest,50.3,39.9
 Elwynn Forest,51.3,37
+Elwynn Forest,54.3,41
 Elwynn Forest,48.1,43.6
 Elwynn Forest,48.9,41.6
 Elwynn Forest,50.7,39.3
@@ -29,6 +30,7 @@ Elwynn Forest,50.7,39.3
 Elwynn Forest,48.1,43.6
 Elwynn Forest,49.3,41
 Elwynn Forest,49.5,41.6
+Elwynn Forest,47.7,32
 Elwynn Forest,48.1,43.7
 Elwynn Forest,48.9,41.6
 Elwynn Forest,45.6,47.7
@@ -36,6 +38,7 @@ Elwynn Forest,42.1,65.9
 Elwynn Forest,43.3,65.7
 Elwynn Forest,43.8,65.8
 Elwynn Forest,42.1,67.3
+Elwynn Forest,39,82.3
 Elwynn Forest,41.3,79.1
 Elwynn Forest,42.1,67.3
 Elwynn Forest,42.1,65.9
@@ -45,6 +48,7 @@ Elwynn Forest,43.1,85.7
 Elwynn Forest,41.7,86.9
 Elwynn Forest,43.2,89.6
 Elwynn Forest,34.5,84.2
+Elwynn Forest,29.8,86
 Elwynn Forest,34.9,83.9
 Elwynn Forest,34.6,84.5
 Elwynn Forest,43.1,85.7
@@ -58,14 +62,18 @@ Elwynn Forest,49.7,66.3
 Elwynn Forest,43.3,65.7
 Elwynn Forest,43.2,89.6
 Elwynn Forest,34.5,84.2
+Elwynn Forest,74,72.2
 Elwynn Forest,79.5,68.8
 Elwynn Forest,81.4,66.1
 Elwynn Forest,81.3,60.6
 Elwynn Forest,72.7,60.3
 Elwynn Forest,79.8,55.5
 Elwynn Forest,81.4,66.1
+Elwynn Forest,74,72.2
+Elwynn Forest,80,77.8
 Elwynn Forest,70.6,76.3
 Elwynn Forest,69.7,79.5
+Elwynn Forest,74,72.2
 Elwynn Forest,79.5,68.8
 Elwynn Forest,60.4,49.7
 Elwynn Forest,42.4,65.8
@@ -84,19 +92,23 @@ Stormwind City,76.8,52.5
 Stormwind City,76.8,52.5
 Stormwind City,77.1,53.3
 Stormwind City,39.2,85.3
+Elwynn Forest,71,80.8
 Stormwind City,39.2,85.3
 Stormwind City,39.1,84.3
 Stormwind City,39.2,85.3
+Stormwind City,69,30.9
 Ironforge,55.5,47.7
-Ironforge,69.1,56.3
-Ironforge,70.7,56.5
-Ironforge,68.7,56
-Ironforge,69.1,56.3
-Ironforge,34.8,47.1
-Ironforge,34.8,49.3
-Ironforge,37.4,38.9
-Ironforge,24.5,33.6
-Ironforge,24.8,18.4
+Dun Morogh,68.7,56
+Dun Morogh,69.1,56.3
+Dun Morogh,70.7,56.5
+Dun Morogh,68.7,56
+Dun Morogh,69.1,56.3
+Loch Modan,33.9,51
+Loch Modan,34.8,47.1
+Loch Modan,34.8,49.3
+Loch Modan,37.4,38.9
+Loch Modan,24.5,33.6
+Loch Modan,24.8,18.4
 Loch Modan,35.5,48.3
 Loch Modan,34.8,49.3
 Loch Modan,34.8,47.1
@@ -109,6 +121,7 @@ Loch Modan,33.9,51
 Stormwind City,64.6,37.2
 Stormwind City,22.6,56.1
 Darkshore,32.4,43.7
+Darkshore,37,44.1
 Darkshore,36.3,45.6
 Darkshore,36.6,45.6
 Darkshore,39.4,43.5
@@ -126,8 +139,10 @@ Darkshore,37.4,40.1
 Darkshore,44.2,36.3
 Darkshore,44.6,36.9
 Darkshore,44.2,36.3
+Darkshore,42,28.6
 Darkshore,37,44.1
 Darkshore,32.4,43.8
+Elwynn Forest,41.1,66
 Stormwind City,50.6,47.5
 Stormwind City,50.6,47.5
 Stormwind City,63.8,72.2
