@@ -1,17 +1,12 @@
 import fs from "fs";
 import { stringify } from "csv-stringify";
+import type { ZonePoint } from "./types";
 
-export type PointData = {
-  zone: string;
-  x: number;
-  y: number;
-};
-
-export function buildData(content: string): PointData[] {
+export function buildData(content: string): ZonePoint[] {
   // Regex: optional zone, then x,y coordinates
   const pattern = /goto\s+(?:(\w+(?:\s\w+)*),)?(\d+\.\d+),(\d+\.\d+)/g;
 
-  const data: PointData[] = [];
+  const data: ZonePoint[] = [];
   let previousZone = "";
 
   let match: RegExpExecArray | null;
@@ -20,8 +15,10 @@ export function buildData(content: string): PointData[] {
     if (!zone) zone = previousZone;
     data.push({
       zone,
-      x: parseFloat(x),
-      y: parseFloat(y),
+      point: {
+        x: parseFloat(x),
+        y: parseFloat(y),
+      },
     });
     previousZone = zone;
   }
@@ -29,18 +26,25 @@ export function buildData(content: string): PointData[] {
   return data;
 }
 
-function write_to_file(points: PointData[], path: string): void {
+function write_to_file(points: ZonePoint[], path: string): void {
   const columns = {
+    zone: "zone",
     x: "x",
     y: "y",
   };
 
-  stringify(points, { header: true, columns: columns }, (err, output) => {
-    if (err) throw err;
-    fs.writeFile(path, output, (err) => {
+  stringify(
+    points.map((p) => {
+      return [p.zone, p.point.x, p.point.y];
+    }),
+    { header: true, columns: columns },
+    (err, output) => {
       if (err) throw err;
-    });
-  });
+      fs.writeFile(path, output, (err) => {
+        if (err) throw err;
+      });
+    },
+  );
 }
 
 const data = fs.readFileSync(
@@ -48,5 +52,5 @@ const data = fs.readFileSync(
   "utf8",
 );
 
-const points = buildData(data).filter((p) => p.zone == "Elwynn Forest");
+const points = buildData(data); //.filter((p) => p.zone == "Elwynn Forest");
 write_to_file(points, "./public/points.csv");
