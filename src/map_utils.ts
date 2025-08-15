@@ -1,24 +1,35 @@
-export function loadMap(): L.Map {
-  const imageWidth = 13000;
-  const imageHeight = 12000;
+import type { Point } from "../scripts/types";
 
+const imageWidth = 13000;
+const imageHeight = 12000;
+
+export function imageCoordsToLeaflet(x: number, y: number): L.LatLngExpression {
+  return [imageHeight - y, x];
+}
+
+export function leafletToImageCoords(lat: number, lng: number): Point {
+  return {
+    x: lng,
+    y: imageHeight - lat,
+  };
+}
+
+export function loadMap(): L.Map {
   const bounds: L.LatLngBoundsExpression = [
-    [0, 0],
-    [imageHeight, imageWidth],
+    [imageHeight, 0], // top-left in Leaflet coordinates
+    [0, imageWidth], // bottom-right
   ];
 
-  // Create map with flat coordinate system
   const map = L.map("map", {
     crs: L.CRS.Simple,
-    // TODO :This currently nicely fits to maxscreen, but would be nice if this was done automatically
     minZoom: -3.65,
     maxBounds: bounds,
     maxBoundsViscosity: 1.0,
   });
 
-  // Load image from public folder
   L.imageOverlay("/map.png", bounds).addTo(map);
   map.fitBounds(bounds);
+
   return map;
 }
 
@@ -28,11 +39,10 @@ export function setTriggers(map) {
 
   // Add marker on map click
   map.on("click", (e: L.LeafletMouseEvent) => {
-    const { lat, lng } = e.latlng;
-
-    const marker = L.marker([lat, lng])
+    const { x, y } = leafletToImageCoords(e.latlng.lat, e.latlng.lng);
+    const marker = L.marker([e.latlng.lat, e.latlng.lng])
       .addTo(map)
-      .bindPopup(`Marker at ${lat.toFixed(0)}, ${lng.toFixed(0)}`);
+      .bindPopup(`Marker at ${x.toFixed(0)}, ${y.toFixed(0)}`);
 
     // Click marker to remove it
     marker.on("dblclick", () => {

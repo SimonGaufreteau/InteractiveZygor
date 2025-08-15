@@ -2,8 +2,13 @@ import L from "leaflet";
 import "leaflet-polylinedecorator";
 import "./style.css";
 
-import { loadMap, setTriggers } from "./map_utils";
-import { loadPointsFromGuide, loadZones, rescalePointToMap } from "./loader";
+import { leafletToImageCoords, loadMap, setTriggers } from "./map_utils";
+import {
+  loadGuideIndex,
+  loadPointsFromGuide,
+  loadZones,
+  rescalePointToMap,
+} from "./loader";
 
 function examplePoints(map: L.Map) {
   // Example points
@@ -37,16 +42,25 @@ function examplePoints(map: L.Map) {
   return map;
 }
 
+// Map setup
 const map = loadMap();
 examplePoints(map);
 setTriggers(map);
 
-const zonePoints = await loadPointsFromGuide("/points.csv");
+// Points setup
+const mapping = await loadGuideIndex();
+const promises = mapping.map(async (guide) => await loadPointsFromGuide(guide));
+const zonePoints = await Promise.all(promises);
 const zones = await loadZones("/zones.csv");
-const rescaledPoints = zonePoints.map((zp) => rescalePointToMap(zp, zones));
+const rescaledPoints = zonePoints
+  .flat()
+  .map((zp) => rescalePointToMap(zp, zones));
 
 rescaledPoints
   .filter((p) => p != undefined)
-  .forEach((p) =>
-    L.marker([p.y, p.x]).bindPopup(`Marker at ${p.x}, ${p.y}`).addTo(map),
-  );
+  .forEach((p) => {
+    const coords = leafletToImageCoords(p.y, p.x);
+    return L.marker([coords.y, coords.x])
+      .bindPopup(`Marker at ${coords.x.toFixed(0)},${coords.y.toFixed(0)}`)
+      .addTo(map);
+  });

@@ -1,6 +1,12 @@
 import { CSVToArray } from "./csv-parser";
 import type { Point, ZonePoint } from "../scripts/types";
 
+export async function loadGuideIndex() {
+  const res = await fetch("/mapping.json");
+  if (!res.ok) throw new Error("Failed to load guide index");
+  const guides: string[] = (await res.json())["guides"];
+  return guides;
+}
 export async function loadPointsFromGuide(guide: string): Promise<ZonePoint[]> {
   const rawPoints: string[][] = CSVToArray(await (await fetch(guide)).text());
 
@@ -30,12 +36,13 @@ export async function loadZones(zonesPath: string): Promise<Map<string, Zone>> {
   // TODO : Refactor this + duplicate function
   const csvData: Zone[] = rawZones.map((z) => ({
     name: z[0],
-    topl_y: Number.parseFloat(z[1]),
-    topl_x: Number.parseFloat(z[2]),
-    bright_y: Number.parseFloat(z[3]),
-    bright_x: Number.parseFloat(z[4]),
-    orig_y: Number.parseFloat(z[5]),
-    orig_x: Number.parseFloat(z[6]),
+    // TODO : Change this
+    topl_y: Number.parseFloat(z[2]),
+    topl_x: Number.parseFloat(z[1]),
+    bright_y: Number.parseFloat(z[4]),
+    bright_x: Number.parseFloat(z[3]),
+    orig_y: 1022, // Number.parseFloat(z[5]),
+    orig_x: 668, //Number.parseFloat(z[6]),
   }));
 
   const res = csvData.reduce((prev: Map<string, Zone>, current) => {
@@ -63,6 +70,6 @@ export function rescalePointToMap(
 
   return {
     x: zone.topl_x + point.x * new_scale_x,
-    y: zone.topl_y - point.y * new_scale_y,
+    y: zone.topl_y + point.y * new_scale_y,
   };
 }
