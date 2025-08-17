@@ -75,7 +75,7 @@ export function drawLine(
   const pointB: L.LatLngExpression = [coordsB.y, coordsB.x];
 
   // Draw arrow from A → B
-  const line = L.polyline([pointA, pointB], { color: "red", weight: 1 }).addTo(
+  const line = L.polyline([pointA, pointB], { color: "blue", weight: 2 }).addTo(
     map,
   );
 
@@ -84,12 +84,17 @@ export function drawLine(
   const arrow = L.polylineDecorator(line, {
     patterns: [
       {
-        offset: "0%",
-        repeat: 50,
+        offset: "98%", // arrow only at the end
+        repeat: 0,
         symbol: L.Symbol.arrowHead({
           pixelSize: 10,
-          polygon: true,
-          pathOptions: { fillOpacity: 1, color: "blue", weight: 0 },
+          polygon: true, // outline only (no filled triangle)
+          pathOptions: {
+            stroke: true,
+            color: "#ff6600", // orange or match your gradient
+            weight: 1,
+            fillOpacity: 1,
+          },
         }),
       },
     ],
@@ -112,8 +117,8 @@ const markerHtmlFromColor = (color: string) => `
 export const markerIconFromColor = (color: string) =>
   L.divIcon({
     className: "my-custom-pin",
-    iconAnchor: [0, 24],
-    labelAnchor: [-6, 0],
-    popupAnchor: [0, -36],
+    iconAnchor: [5, 16],
+    labelAnchor: [0, 0],
+    popupAnchor: [-1, -20],
     html: `<span style="${markerHtmlFromColor(color)}" />`,
   });

@@ -2,7 +2,7 @@
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
-
+  font-size: 16px;
   color-scheme: light dark;
   color: rgba(255, 255, 255, 0.87);
   background-color: #242424;
@@ -26,7 +26,7 @@ body {
 }
 
 #sidebar {
-  flex: 0 0 250px; /* fixed width */
+  flex: 0 0 175px; /* fixed width */
   background: #0000;
   border-right: 1px solid #ddd;
   padding: 1rem;
