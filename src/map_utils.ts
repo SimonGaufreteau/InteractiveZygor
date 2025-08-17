@@ -1,3 +1,6 @@
+import L from "leaflet";
+import "leaflet-polylinedecorator";
+
 import type { Point } from "../scripts/types";
 
 const imageWidth = 13000;
@@ -33,7 +36,7 @@ export function loadMap(): L.Map {
   return map;
 }
 
-export function setTriggers(map) {
+export function setTriggers(map: L.Map) {
   // Array to store markers
   const markers: L.Marker[] = [];
 
@@ -58,3 +61,53 @@ export function setTriggers(map) {
     markers.push(marker);
   });
 }
+
+export function drawLine(start: Point, end: Point, map: L.Map) {
+  const coordsA = leafletToImageCoords(start.y, start.x);
+  const coordsB = leafletToImageCoords(end.y, end.x);
+  const pointA: L.LatLngExpression = [coordsA.y, coordsA.x];
+  const pointB: L.LatLngExpression = [coordsB.y, coordsB.x];
+
+  // Draw arrow from A → B
+  const line = L.polyline([pointA, pointB], { color: "red", weight: 1 }).addTo(
+    map,
+  );
+
+  // Add arrowhead using PolylineDecorator
+  // @ts-ignore - plugin extends L
+  const arrow = L.polylineDecorator(line, {
+    patterns: [
+      {
+        offset: "0%",
+        repeat: 50,
+        symbol: L.Symbol.arrowHead({
+          pixelSize: 10,
+          polygon: true,
+          pathOptions: { fillOpacity: 1, color: "blue", weight: 0 },
+        }),
+      },
+    ],
+  }).addTo(map);
+  return map;
+}
+
+const markerHtmlFromColor = (color: string) => `
+  background-color: ${color};
+  width: 1rem;
+  height: 1rem;
+  display: block;
+  left: -0.3rem;
+  top: -0.3rem;
+  position: relative;
+  border-radius: 1rem 1rem 0;
+  transform: rotate(45deg);
+  border: 1px solid #FFFFFF`;
+
+export const markerIconFromColor = (color: string) =>
+  L.divIcon({
+    className: "my-custom-pin",
+    iconAnchor: [0, 24],
+    labelAnchor: [-6, 0],
+    popupAnchor: [0, -36],
+    html: `<span style="${markerHtmlFromColor(color)}" />`,
+  });

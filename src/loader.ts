@@ -1,5 +1,5 @@
 import { CSVToArray } from "./csv-parser";
-import type { Point, ZonePoint } from "../scripts/types";
+import type { Point, ZonePoint, Zone } from "../scripts/types";
 
 export async function loadGuideIndex() {
   const res = await fetch("/mapping.json");
