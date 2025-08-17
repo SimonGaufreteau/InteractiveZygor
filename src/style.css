@@ -15,12 +15,29 @@
 
 html,
 body {
-  margin: 0;
-  padding: 0;
   height: 100%;
+  margin: 0;
+}
+
+#app {
+  display: flex;
+  height: 100%;
+  width: 100%;
+}
+
+#sidebar {
+  flex: 0 0 250px; /* fixed width */
+  background: #0000;
+  border-right: 1px solid #ddd;
+  padding: 1rem;
+  overflow-y: auto;
+  z-index: 1000; /* make sure it stays above the map */
 }
 
 #map {
-  height: 100vh; /* 100% of viewport height */
+  flex: 1;
+  height: 100%;
   width: 100%;
+  position: relative; /* important to avoid Leaflet absolute overlap */
+  z-index: 0;
 }

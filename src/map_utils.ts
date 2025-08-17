@@ -25,7 +25,7 @@ export function loadMap(): L.Map {
 
   const map = L.map("map", {
     crs: L.CRS.Simple,
-    minZoom: -3.65,
+    minZoom: -2.7,
     maxBounds: bounds,
     maxBoundsViscosity: 1.0,
   });
@@ -45,7 +45,9 @@ export function setTriggers(map: L.Map) {
     const { x, y } = leafletToImageCoords(e.latlng.lat, e.latlng.lng);
     const marker = L.marker([e.latlng.lat, e.latlng.lng])
       .addTo(map)
-      .bindPopup(`Marker at ${x.toFixed(0)}, ${y.toFixed(0)}`);
+      .bindPopup(
+        `Marker at ${x.toFixed(0)}, ${y.toFixed(0)} (leaflet : ${e.latlng.lat.toFixed(0)}, ${e.latlng.lng.toFixed(0)})`,
+      );
 
     // Click marker to remove it
     marker.on("dblclick", () => {
@@ -62,7 +64,11 @@ export function setTriggers(map: L.Map) {
   });
 }
 
-export function drawLine(start: Point, end: Point, map: L.Map) {
+export function drawLine(
+  start: Point,
+  end: Point,
+  map: L.Map,
+): [L.Polyline, L.polylineDecorator] {
   const coordsA = leafletToImageCoords(start.y, start.x);
   const coordsB = leafletToImageCoords(end.y, end.x);
   const pointA: L.LatLngExpression = [coordsA.y, coordsA.x];
@@ -88,7 +94,7 @@ export function drawLine(start: Point, end: Point, map: L.Map) {
       },
     ],
   }).addTo(map);
-  return map;
+  return [line, arrow];
 }
 
 const markerHtmlFromColor = (color: string) => `
